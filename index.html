@@ -1,0 +1,30 @@
+<video controls></video>
+
+<script>
+    const player = document.querySelector('video');
+
+    // Install ServiceWorker
+    navigator.serviceWorker.register('./worker.js').then(event => {
+        console.log('ServiceWorker registration successful:', event);
+    }, function (err) {
+        console.error('ServiceWorker registration failed:', err);
+    });
+
+    // Wait for ServiceWorker to be ready
+    navigator.serviceWorker.ready.then(event => {
+
+        // Build the URL with parameters used to create a HLS playlist
+        const url = new URL('/audiomux/primary.m3u8', window.location.href);
+        url.searchParams.set('videoUrl', '../video.ts');
+        url.searchParams.set('audioUrl', '../audio.mp3');
+        url.searchParams.set('videoDuration', '1');
+        url.searchParams.set('audioDuration', '155');
+
+        // Set the src attribute of the player as the HLS playlist
+        player.src = url.href;
+    });
+
+    // When the player finishes, restart it manually
+    // This could be done using the loop attribute but it helps us test that Javascript executes
+    player.addEventListener('ended', event => player.play());
+</script>
