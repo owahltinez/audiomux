@@ -7,16 +7,16 @@
     navigator.serviceWorker.register('./worker.js').then(event => {
         console.log('ServiceWorker registration successful:', event);
     }, function (err) {
-        console.error('ServiceWorker registration failed:', err);
+        alert(`ServiceWorker registration failed: ${err}`);
     });
 
     // Wait for ServiceWorker to be ready
     navigator.serviceWorker.ready.then(event => {
 
         // Build the URL with parameters used to create a HLS playlist
-        const url = new URL('audiomux/primary.m3u8', window.location.href);
-        url.searchParams.set('videoUrl', '../video.ts');
-        url.searchParams.set('audioUrl', '../audio.mp3');
+        const url = new URL('/audiomux/primary.m3u8', window.location.href);
+        url.searchParams.set('videoUrl', 'https://owahltinez.github.io/audiomux/video.ts');
+        url.searchParams.set('audioUrl', 'https://owahltinez.github.io/audiomux/audio.mp3');
         url.searchParams.set('videoDuration', '1');
         url.searchParams.set('audioDuration', '155');
 
